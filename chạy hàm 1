@@ -1,0 +1,48 @@
+#include <iostream>
+ #include <string>
+
+ using namespace std;
+  
+ class A {
+	public:
+		A(int x, int y); 
+	     	void setStatic (int x) { value= x; }    //hàm thành viên xác lập trực tiếp trong dòng lệnh khai báo
+                void setNormal (int x) { normal=x; }
+                void setValue(int i) { value = i;}
+	     	void getValue() const { cout<< "value "<< value << endl;}
+		void getShareConst() const {cout << "shareconst:" << shareconst << endl;}
+		void getPrivate() const;
+		void getNormal() const {cout << "normal variable:" << normal << endl;}
+		
+	private:
+		static int value;
+		static const int shareconst;
+		const int privateconst;
+		int normal;
+		};
+		
+ int A::value=3;             //gán giá trị cho biến tĩnh ở đây dùng chung cho mọi hàm của lớp A (=3)
+ const int A::shareconst=2;  //gán giá trị cho hằng có kiểu tĩnh
+ A::A(int x, int y):privateconst(y)     //Hàm dựng: cách gán giá trị ban đầu cho một hằng thông thường
+ {
+	normal=x;                       //gán giá trị ban đầu cho biến thông thường
+ }
+
+ void A::getPrivate() const  //cách để xác lập mã cho hàm thành viên bên ngoài dòng lệnh khai báo của lớp
+ {
+	cout <<"privateconst:" << privateconst << endl;
+ }
+
+ int main ()
+ {
+	A A1(3,1);        // giá trị hằng privateconst của A1 được gán ở đây (=1)
+        A A2(5,2);        // giá trị hằng privateconst của A2 được gán ở đây (=2)
+	A1.getPrivate();
+        A2.getPrivate();
+        A1.getShareConst(); //đọc giá trị hằng của biến tĩnh trong A1
+        A2.getShareConst(); //biến tĩnh trong A2 có cùng giá trị với biến tĩnh của A1 
+        A1.setValue(4);     //cài đặt cho biến tĩnh value cho đối tượng A1
+        A2.getValue();      //Cài dặt từ A1 nhưng lại có giá trị luôn cho đối tượng A2        
+        
+	return 0;	
+ }
